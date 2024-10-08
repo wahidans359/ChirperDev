@@ -15,15 +15,20 @@ import FeedCard from "@/components/FeedCard";
 // import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image"
 import { IoImageOutline } from "react-icons/io5";
-import { useCreatePost, useGetAllPosts } from "@/hooks/post";
+import { useCreatePost} from "@/hooks/post";
 import { Post } from "@/gql/graphql";
 import ChirperLayout from "@/components/FeedCard/Layout/ChirperLayout";
 import { useCurrentUser } from "@/hooks/user";
+import { GetServerSideProps } from "next";
+import { graphqlClient } from "@/clients/api";
+import { getAllPostsQuery } from "@/graphql/queries/tweet";
 
-
-export default function Home() {
+interface HomeProps{
+  posts?:Post[]
+}
+export default function Home(props:HomeProps) {
   
-  const {posts = []} = useGetAllPosts()
+  // const {posts = []} = useGetAllPosts()
   const { user } = useCurrentUser();
   const {mutate} = useCreatePost()
   
@@ -96,10 +101,19 @@ export default function Home() {
               </div>
             </div>
           </div>
-          {posts?.map((post) =>
+          {props.posts?.map((post) =>
             post ? <FeedCard key={post?.id} data={post as Post} /> : null
           )}
         </ChirperLayout>
     </div>
   );
 }
+export const getServerSideProps:GetServerSideProps<HomeProps> = async (context) => {
+  const allPosts = await graphqlClient.request(getAllPostsQuery);
+  console.log(context)
+  return {
+    props: {
+      posts:allPosts.getAllPosts as Post[],
+    },
+  };
+};
