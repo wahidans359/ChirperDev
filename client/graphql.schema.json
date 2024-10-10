@@ -214,7 +214,7 @@
             "deprecationReason": null
           },
           {
-            "name": "getSignedURLForPost",
+           "name": "getSignedURLForPost",
             "description": null,
             "args": [
               {
