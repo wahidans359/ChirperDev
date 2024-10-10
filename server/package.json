@@ -12,8 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.11.0",
-    "@aws-sdk/client-s3": "^3.666.0",
-    "@aws-sdk/s3-request-presigner": "^3.666.0",
     "@prisma/client": "5.19.1",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
