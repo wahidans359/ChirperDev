@@ -47,12 +47,15 @@ export type Query = {
 };
 
 
+<<<<<<< HEAD
 export type QueryGetUserByIdArgs = {
   id: Scalars['ID']['input'];
 };
 
 
 =======
+=======
+>>>>>>> parent of e0a6a2e (Adding profile page)
 =======
 >>>>>>> parent of e0a6a2e (Adding profile page)
 export type QueryVerifyGoogleTokenArgs = {
