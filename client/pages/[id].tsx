@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import ChirperLayout from "@/components/FeedCard/Layout/ChirperLayout";
 import type { NextPage } from "next";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -35,3 +36,19 @@ const userProfilePage: NextPage = () => {
   );
 };
 export default userProfilePage;
+=======
+import ChirperLayout from '@/components/FeedCard/Layout/ChirperLayout'
+import type {NextPage} from 'next'
+
+const userProfilePage:NextPage=() => {
+
+    return (
+        <div>
+            <ChirperLayout>
+                <h1>user profile</h1>
+            </ChirperLayout>
+        </div>
+    )
+}
+export default userProfilePage;
+>>>>>>> parent of e0a6a2e (Adding profile page)
