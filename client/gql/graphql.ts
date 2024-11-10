@@ -47,8 +47,6 @@ export type Query = {
 };
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type QueryGetUserByIdArgs = {
   id: Scalars['ID']['input'];
 };

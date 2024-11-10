@@ -1,7 +1,10 @@
 import {graphql} from '../../gql';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of e0a6a2e (Adding profile page)
 =======
 >>>>>>> parent of e0a6a2e (Adding profile page)
 export const verifyUserGoogleTokenQuery = graphql(
@@ -13,7 +16,11 @@ export const verifyUserGoogleTokenQuery = graphql(
 `)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const getCurrentUserQuery = graphql(`
+=======
+export const getCurrentUserQuery =graphql(`
+>>>>>>> parent of e0a6a2e (Adding profile page)
 =======
 export const getCurrentUserQuery =graphql(`
 >>>>>>> parent of e0a6a2e (Adding profile page)
@@ -25,10 +32,16 @@ export const getCurrentUserQuery =graphql(`
             firstName
             lastName
 <<<<<<< HEAD
+<<<<<<< HEAD
             
         }
     }
 `)
+=======
+        }
+    }
+    `)
+>>>>>>> parent of e0a6a2e (Adding profile page)
 =======
         }
     }
