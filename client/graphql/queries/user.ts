@@ -1,15 +1,6 @@
+import { gql } from 'graphql-request';
 import {graphql} from '../../gql';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-
-=======
->>>>>>> parent of e0a6a2e (Adding profile page)
-=======
->>>>>>> parent of e0a6a2e (Adding profile page)
-=======
->>>>>>> parent of e0a6a2e (Adding profile page)
 export const verifyUserGoogleTokenQuery = graphql(
      `#graphql 
     query VerifyUserGoogleToken($token: String!){
@@ -18,45 +9,60 @@ export const verifyUserGoogleTokenQuery = graphql(
     }
 `)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-export const getCurrentUserQuery = graphql(`
-=======
-export const getCurrentUserQuery =graphql(`
->>>>>>> parent of e0a6a2e (Adding profile page)
-=======
-export const getCurrentUserQuery =graphql(`
->>>>>>> parent of e0a6a2e (Adding profile page)
-=======
-export const getCurrentUserQuery =graphql(`
->>>>>>> parent of e0a6a2e (Adding profile page)
-    query GetCurrentUser{
-        getCurrentUser {
+
+// export const getCurrentUserQuery = graphql(`
+//     query GetCurrentUser{
+//         getCurrentUser {
+//             id
+//             email
+//             profileImageURL
+//             firstName
+//             lastName
+//         }
+//     }
+// `) as const;
+
+export const getCurrentUserQuery = gql`
+  query GetCurrentUser {
+    getCurrentUser {
+      id
+      email
+      profileImageURL
+      firstName
+      lastName
+      posts{
+        id
+        content
+        author{
+            id
+            firstName
+            lastName
+            profileImageURL
+        }
+      }
+    }
+  }
+`
+
+export const getUserByIdQuery = graphql(`
+    #graphql
+    
+    query GetUserById($id: ID!){
+        getUserById(id:$id){
             id
             email
             profileImageURL
             firstName
             lastName
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            
+            posts{
+                id
+                content
+                author{
+                    firstName
+                    lastName
+                    profileImageURL
+                }
+            }
         }
     }
-`)
-=======
-        }
-    }
-    `)
->>>>>>> parent of e0a6a2e (Adding profile page)
-=======
-        }
-    }
-    `)
->>>>>>> parent of e0a6a2e (Adding profile page)
-=======
-        }
-    }
-    `)
->>>>>>> parent of e0a6a2e (Adding profile page)
+`)  

@@ -17,43 +17,55 @@ import { RiMailOpenFill } from "react-icons/ri";
 import { FaBookmark } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TbPencilPlus } from "react-icons/tb";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import Link from "next/link";
 interface ChirperLayoutProps {
   children: React.ReactNode;
 }
 interface TwitterSideBarButton {
     title: string;
     icon: React.ReactNode;
+    link:string;
   }
-const sideBarMenuItems: TwitterSideBarButton[] = [
-    {
-      title: "Home",
-      icon: <ImHome />
-    },
-    {
-      title: "Explore",
-      icon: <TbWorldSearch />
-    },
-    {
-      title: "Notifications",
-      icon: <IoNotificationsSharp />
-    },
-    {
-      title: "Messages",
-      icon: <RiMailOpenFill />
-    },
-    {
-      title: "Bookmarks",
-      icon: <FaBookmark />
-    },
-    {
-      title: "Profiles",
-      icon: <IoPersonSharp/>
-    },
-  ];
+
 const ChirperLayout: React.FC<ChirperLayoutProps> = (props) => {
     const { user } = useCurrentUser();
     const queryClient = useQueryClient();
+
+    const sideBarMenuItems:TwitterSideBarButton[] = useMemo(()=>
+       [
+        {
+          title: "Home",
+          icon: <ImHome />,
+          link: '/'
+        },
+        {
+          title: "Explore",
+          icon: <TbWorldSearch />,
+          link: '/'
+        },
+        {
+          title: "Notifications",
+          icon: <IoNotificationsSharp />,
+          link: '/'
+        },
+        {
+          title: "Messages",
+          icon: <RiMailOpenFill />,
+          link: '/'
+        },
+        {
+          title: "Bookmarks",
+          icon: <FaBookmark />,
+          link: '/'
+        },
+        {
+          title: "Profiles",
+          icon: <IoPersonSharp/>,
+          link: `/${user?.id}`
+        },
+      ]
+    ,[user?.id])
     const handleLoginWithGoogle = useCallback(
         async (cred: CredentialResponse) => {
           const googleToken = cred.credential;
@@ -83,11 +95,13 @@ const ChirperLayout: React.FC<ChirperLayoutProps> = (props) => {
             <ul className="text-xl ">
               {sideBarMenuItems.map((item) => (
                 <li
-                  className="flex justify-start items-center gap-4 hover:bg-gray-800 rounded-full px-5 py-2 w-fit mt-2 cursor-pointer transition-all"
+                  
                   key={item.title}
                 >
+                  <Link className="flex justify-start items-center gap-4 hover:bg-gray-800 rounded-full px-5 py-2 w-fit mt-2 cursor-pointer transition-all" href={item.link}>
                   <span className=" text-3xl">{item.icon}</span>
-                  <span className="hidden sm:inline">{item.title}</span>
+                  <span className="hidden sm:inline">{item.title}</span></Link>
+                  
                 </li>
               ))}
             </ul>
