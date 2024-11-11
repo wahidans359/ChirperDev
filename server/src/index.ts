@@ -7,6 +7,9 @@ import { User } from "./user";
 import {Post} from './post'
 import { GraphqlContext } from "./interfaces";
 import JWTService from "./services/jwt";
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 
 async function init() {
@@ -26,6 +29,7 @@ async function init() {
         }
         type Mutation{
             ${Post.mutations}
+            ${User.mutations}
         }
     `,
     resolvers: {
@@ -34,7 +38,8 @@ async function init() {
         ...Post.resolvers.queries
       },
       Mutation: {
-        ...Post.resolvers.mutations
+        ...Post.resolvers.mutations,
+        ...User.resolvers.mutations
       }, 
       ...Post.resolvers.extraResolvers,
       ...User.resolvers.extraResolvers

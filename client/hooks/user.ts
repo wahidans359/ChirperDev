@@ -1,4 +1,6 @@
 import { graphqlClient } from "@/clients/api"
+import { User } from "@/gql/graphql"
+
 import { getCurrentUserQuery, getUserByIdQuery } from "@/graphql/queries/user"
 import { useQuery } from "@tanstack/react-query"
 import { DocumentNode } from "graphql"
@@ -9,7 +11,7 @@ export const useCurrentUser = () =>{
         queryKey:['current-user'],
         queryFn: () => graphqlClient.request(getCurrentUserQuery as unknown as DocumentNode)
     })
-    return {...query,user:query.data?.getCurrentUser }
+    return { ...query, user: (query.data as { getCurrentUser?: User })?.getCurrentUser };
 }
 
 export const useGetUserById = (id: string) => {

@@ -1,4 +1,4 @@
-import { gql } from 'graphql-request';
+// import { gql } from 'graphql-request';
 import {graphql} from '../../gql';
 
 export const verifyUserGoogleTokenQuery = graphql(
@@ -22,7 +22,8 @@ export const verifyUserGoogleTokenQuery = graphql(
 //     }
 // `) as const;
 
-export const getCurrentUserQuery = gql`
+export const getCurrentUserQuery = graphql(`
+  #graphql
   query GetCurrentUser {
     getCurrentUser {
       id
@@ -30,9 +31,28 @@ export const getCurrentUserQuery = gql`
       profileImageURL
       firstName
       lastName
+      recommendedUsers{
+        id
+        firstName
+        lastName
+        profileImageURL
+      }
+      followers{
+        id
+        firstName
+        lastName
+        profileImageURL
+      }
+      following{
+        id
+        firstName
+        lastName
+        profileImageURL
+      }      
       posts{
         id
         content
+        imageUrl
         author{
             id
             firstName
@@ -42,7 +62,7 @@ export const getCurrentUserQuery = gql`
       }
     }
   }
-`
+`)
 
 export const getUserByIdQuery = graphql(`
     #graphql
@@ -54,6 +74,18 @@ export const getUserByIdQuery = graphql(`
             profileImageURL
             firstName
             lastName
+            followers{
+              id
+              firstName
+              lastName
+              profileImageURL
+            }
+            following{
+              id
+              firstName
+              lastName
+              profileImageURL
+            }
             posts{
                 id
                 content

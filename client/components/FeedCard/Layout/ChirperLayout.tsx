@@ -1,6 +1,4 @@
-// import { Post } from "@/gql/graphql";
-// import { GoogleLogin } from "@react-oauth/google";
-;
+
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 import { useCurrentUser } from "@/hooks/user";
@@ -19,6 +17,10 @@ import { IoPersonSharp } from "react-icons/io5";
 import { TbPencilPlus } from "react-icons/tb";
 import { useCallback, useMemo } from "react";
 import Link from "next/link";
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
+
 interface ChirperLayoutProps {
   children: React.ReactNode;
 }
@@ -117,13 +119,14 @@ const ChirperLayout: React.FC<ChirperLayoutProps> = (props) => {
               <div className="absolute bottom-5 flex gap-2 items-center hover:bg-gray-800 px-3 py-2 rounded-full cursor-pointer transition-all">
                {user && user.profileImageURL && (
                     <Image
-                      className="rounded-full"
+                      className={`${inter.className} font-extrabol rounded-full`}
                       src={user?.profileImageURL}
                       width="40"
                       height="40"
                       alt="user image"
                     />
                   )}
+                  
                 <div className="hidden sm:block">
                     <h3 className="text-sm">{user?.firstName} {user?.lastName}</h3>
                 </div>
@@ -137,11 +140,24 @@ const ChirperLayout: React.FC<ChirperLayoutProps> = (props) => {
           {props.children}
         </div>
         <div className="sm:col-span-3 p-5">
-          {!user && (
+          {!user ? (
             <div className="border p-3 bg-slate-700 rounded-lg">
               <h1 className="my-2 text-xl">New To Chirper?</h1>
               <GoogleLogin onSuccess={handleLoginWithGoogle}></GoogleLogin>
             </div>
+          ) : (<div className="border px-4 py-3 hover:bg-slate-900 rounded-lg transition-all cursor-pointer">
+            <h1 className="my-2 text-xl mb-5">Users you may know</h1>
+            {
+              user?.recommendedUsers?.map(el => (
+              <div className="flex items-center gap-3 mt-2" key={el?.id}>
+                {el?.profileImageURL && <Image className="rounded-full" src={el?.profileImageURL} width={60} height={60} alt="profile-image"/>}
+                <div className="text-lg">
+                  <div>{el?.firstName} {el?.lastName}</div>
+                  <Link href={`/${el?.id}`} className="bg-white text-black text-sm px-5 py-1 rounded-lg">View</Link> 
+                </div>
+              </div>))
+            }
+          </div>
           )}
         </div>
       </div>
