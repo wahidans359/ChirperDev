@@ -1,6 +1,6 @@
 
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-
+import { IoLogOutSharp } from "react-icons/io5";
 import { useCurrentUser } from "@/hooks/user";
 import Image from "next/image";
 import { graphqlClient } from "@/clients/api";
@@ -14,10 +14,11 @@ import { IoNotificationsSharp } from "react-icons/io5";
 import { RiMailOpenFill } from "react-icons/ri";
 import { FaBookmark } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
-import { TbPencilPlus } from "react-icons/tb";
+
 import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import { Inter } from 'next/font/google'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,6 +34,7 @@ interface TwitterSideBarButton {
 const ChirperLayout: React.FC<ChirperLayoutProps> = (props) => {
     const { user } = useCurrentUser();
     const queryClient = useQueryClient();
+
 
     const sideBarMenuItems:TwitterSideBarButton[] = useMemo(()=>
        [
@@ -68,6 +70,18 @@ const ChirperLayout: React.FC<ChirperLayoutProps> = (props) => {
         },
       ]
     ,[user?.id])
+    const handleLogout = async () => {
+      window.localStorage.removeItem("__chirper_token");
+      await queryClient.invalidateQueries({ queryKey: ["user"] }); // invalidate user query
+      await queryClient.invalidateQueries({ queryKey: ["all-posts"] }); // invalidate all-posts query
+      toast.success("Logged out successfully");
+      setTimeout(() => {
+        window.location.reload();
+        window.location.href = '/';
+      }, 1000);
+
+      // Add other queries that rely on authentication token here
+    };
     const handleLoginWithGoogle = useCallback(
         async (cred: CredentialResponse) => {
           const googleToken = cred.credential;
@@ -107,14 +121,14 @@ const ChirperLayout: React.FC<ChirperLayoutProps> = (props) => {
                 </li>
               ))}
             </ul>
-            <div className="mt-5 px-3">
-              <button className="hidden sm:block bg-[#1d9bf0] font-semibold text-lg py-2 px-4 rounded-full w-full">
-                Post
-              </button>
-              <button className="block sm:hidden bg-[#1d9bf0] font-semibold text-lg py-2 px-4 rounded-full w-full">
-              <TbPencilPlus />
-              </button>
-            </div>
+            {user && <div className="mt-5 px-3">
+                <button onClick={handleLogout} className="hidden sm:block bg-[#1d9bf0] font-semibold text-lg py-2 px-4 rounded-full w-full">
+                  Logout
+                </button>
+                <button onClick={handleLogout} className="block sm:hidden bg-[#1d9bf0] font-semibold text-lg py-2 px-4 rounded-full w-full">
+                  <IoLogOutSharp />
+                </button>
+            </div>}
             {user && (
               <div className="absolute bottom-5 flex gap-2 items-center hover:bg-gray-800 px-3 py-2 rounded-full cursor-pointer transition-all">
                {user && user.profileImageURL && (

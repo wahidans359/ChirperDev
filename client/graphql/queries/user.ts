@@ -53,6 +53,7 @@ export const getCurrentUserQuery = graphql(`
         id
         content
         imageUrl
+        createdAt
         author{
             id
             firstName
@@ -89,6 +90,8 @@ export const getUserByIdQuery = graphql(`
             posts{
                 id
                 content
+                createdAt
+                imageUrl
                 author{
                     firstName
                     lastName

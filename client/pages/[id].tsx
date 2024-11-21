@@ -2,6 +2,7 @@ import ChirperLayout from "@/components/FeedCard/Layout/ChirperLayout";
 import type { GetServerSideProps, NextPage } from "next";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Image from "next/image";
+import { useEffect, useState } from 'react';
 
 import { FeedCard } from "@/components/FeedCard";
 
@@ -12,6 +13,7 @@ import { useCurrentUser } from "@/hooks/user";
 import { useCallback, useMemo } from "react";
 import { folllowUserMutation, unfolllowUserMutation } from "@/graphql/mutation/user";
 import { useQueryClient } from "@tanstack/react-query";
+
 // import { Post, User } from "@/gql/graphql";
 // import { useRouter } from "next/router";
 // import { graphqlClient } from "@/clients/api";
@@ -22,24 +24,28 @@ interface ServerProps {
 }
 
 const UserProfilePage: NextPage<ServerProps> = (props) => {
-  const {user:currentUser} = useCurrentUser();
+  const [sortedPosts, setSortedPosts] = useState(props.userInfo?.posts);
+  const { user: currentUser } = useCurrentUser();
   const queryClient = useQueryClient();
-  const amIFollowing = useMemo(() =>{
-    if(!props.userInfo) return false;
+  const amIFollowing = useMemo(() => {
+    if (!props.userInfo) return false;
     return ((currentUser?.following?.findIndex(el => el?.id === props.userInfo?.id) ?? -1) >= 0)
-  },[currentUser?.following,props.userInfo])
-
+  }, [currentUser?.following, props.userInfo])
+  useEffect(() => {
+    const sortedPosts = props.userInfo?.posts?.slice().reverse();
+    setSortedPosts(sortedPosts);
+  }, [props.userInfo?.posts]);
   const handleFollowUser = useCallback(async () => {
-    if(!props.userInfo) return;
+    if (!props.userInfo) return;
     await graphqlClient.request(folllowUserMutation, { to: props.userInfo?.id });
     await queryClient.invalidateQueries({ queryKey: ["current-user"] });
-  },[props.userInfo,queryClient])
+  }, [props.userInfo, queryClient])
   const handleUnfollowUser = useCallback(async () => {
-    if(!props.userInfo) return;
+    if (!props.userInfo) return;
     await graphqlClient.request(unfolllowUserMutation, { to: props.userInfo?.id });
     await queryClient.invalidateQueries({ queryKey: ["current-user"] });
-    
-  },[props.userInfo,queryClient])
+
+  }, [props.userInfo, queryClient])
   return (
     <div>
       <ChirperLayout>
@@ -79,22 +85,20 @@ const UserProfilePage: NextPage<ServerProps> = (props) => {
               {
                 currentUser?.id !== props.userInfo?.id && (
                   <>{
-                    amIFollowing ? 
-                    <button onClick={handleUnfollowUser} className="bg-white text-black px-3 py-1 rounded-full text-md">Unfollow</button> : 
-                    <button onClick={handleFollowUser} className="bg-white text-black px-3 py-1 rounded-full text-md">Follow</button>
+                    amIFollowing ?
+                      <button onClick={handleUnfollowUser} className="bg-white text-black px-3 py-1 rounded-full text-md">Unfollow</button> :
+                      <button onClick={handleFollowUser} className="bg-white text-black px-3 py-1 rounded-full text-md">Follow</button>
                   }
                   </>
                 )
               }
-              
+
             </div>
           </div>
           <div className="p-4">
-            {props.userInfo?.posts?.map(
-              (post) => (
-                <FeedCard key={post?.id} data={post as Post} />
-              )
-            )}
+            {sortedPosts?.map((post) => (
+              <FeedCard key={post?.id} data={post as Post}/>
+            ))}
           </div>
         </div>
       </ChirperLayout>

@@ -16,9 +16,12 @@ interface FeedCardProps {
 }
 
 export const FeedCard: React.FC<FeedCardProps>  = (props) => {
-
-
+  function formatDate(timestamp: string): string {
+    const date = new Date(parseInt(timestamp));
+    return date.toLocaleString();
+  }
   const { data } = props;
+  console.log(data.createdAt);
   // console.log(data)
   return (
     <div className="border border-r-0 border-l-0 border-t-0 border-gray-600 p-4 hover:bg-slate-900 transition-all cursor-pointer">
@@ -40,9 +43,11 @@ export const FeedCard: React.FC<FeedCardProps>  = (props) => {
           <p className="">
             {data.content}
           </p>
+
           {
-            data.imageUrl && <Image src={data.imageUrl} width={400} height={400} alt="post image"/>
+            data.imageUrl && <Image className="mt-4" src={data.imageUrl} width={400} height={400} alt="post image"/>
           }
+          {data.createdAt && <p className="text-sm font-bold text-slate-500 mt-4 ">Posted at {formatDate(data.createdAt)}</p>}
           <div className="flex justify-between mt-5 text-lg items-center pr-10">
             <div>
               <FiMessageCircle />

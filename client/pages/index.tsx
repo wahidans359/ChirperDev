@@ -92,7 +92,7 @@ export default function Home(props: HomeProps) {
                 )}
               </div>
 
-              <div className="col-span-11">
+              {user && <div className="col-span-11">
                 <textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
@@ -120,7 +120,7 @@ export default function Home(props: HomeProps) {
                     Post
                   </button>
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
         </div>
